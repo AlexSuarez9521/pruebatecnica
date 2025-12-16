@@ -5,28 +5,31 @@ import InventarioResumen from './components/InventarioResumen';
 import Combinaciones from './components/Combinaciones';
 import CatFactsModal from './components/CatFactsModal';
 import UselessFactFooter from './components/UselessFactFooter';
+import type { Producto } from './types';
 import './App.css';
 
-function App() {
-  const [productoToEdit, setProductoToEdit] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0);
+/**
+ * Componente principal de la aplicación
+ */
+const App: React.FC = () => {
+  const [productoToEdit, setProductoToEdit] = useState<Producto | null>(null);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
 
-  const handleEdit = (producto) => {
+  const handleEdit = useCallback((producto: Producto): void => {
     setProductoToEdit(producto);
-    // Scroll al formulario
     document.querySelector('.producto-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback((): void => {
     setProductoToEdit(null);
     setRefreshKey((prev) => prev + 1);
   }, []);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback((): void => {
     setProductoToEdit(null);
-  };
+  }, []);
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = useCallback((): void => {
     setRefreshKey((prev) => prev + 1);
   }, []);
 
@@ -76,6 +79,6 @@ function App() {
       <UselessFactFooter />
     </div>
   );
-}
+};
 
 export default App;

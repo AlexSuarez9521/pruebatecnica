@@ -4,10 +4,8 @@
 
 /**
  * Formatea un valor numérico como moneda colombiana (COP)
- * @param {number} value - Valor a formatear
- * @returns {string} Valor formateado como moneda
  */
-export const formatCurrency = (value) => {
+export const formatCurrency = (value: number | null | undefined): string => {
   if (value === null || value === undefined) return '$0';
 
   return new Intl.NumberFormat('es-CO', {
@@ -20,10 +18,8 @@ export const formatCurrency = (value) => {
 
 /**
  * Formatea una fecha en formato legible
- * @param {string|Date} date - Fecha a formatear
- * @returns {string} Fecha formateada
  */
-export const formatDate = (date) => {
+export const formatDate = (date: string | Date | null | undefined): string => {
   if (!date) return '-';
 
   return new Intl.DateTimeFormat('es-CO', {
@@ -35,11 +31,8 @@ export const formatDate = (date) => {
 
 /**
  * Trunca un texto a una longitud máxima
- * @param {string} text - Texto a truncar
- * @param {number} maxLength - Longitud máxima
- * @returns {string} Texto truncado
  */
-export const truncateText = (text, maxLength = 50) => {
+export const truncateText = (text: string | null | undefined, maxLength: number = 50): string => {
   if (!text) return '-';
   if (text.length <= maxLength) return text;
 

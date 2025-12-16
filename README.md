@@ -13,6 +13,7 @@ Sistema completo de gestión de productos con operaciones CRUD, cálculo de inve
 
 ### Frontend
 - **React 18**
+- **TypeScript 5.x**
 - **Axios**
 - **CSS3 (Variables CSS, Flexbox, Grid)**
 
@@ -35,7 +36,7 @@ Asegúrate de tener instalado:
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/AlexSuarez9521/pruebatecnica.git
 cd crud-productos
 ```
 
@@ -104,19 +105,28 @@ crud-productos/
 │   │   └── application.properties    # Configuración
 │   └── pom.xml
 │
-├── frontend/                         # Aplicación React
+├── frontend/                         # Aplicación React + TypeScript
 │   ├── src/
-│   │   ├── components/               # Componentes React
-│   │   │   ├── ProductoList.js       # Lista con ordenamiento
-│   │   │   ├── ProductoForm.js       # Formulario CRUD
-│   │   │   ├── InventarioResumen.js  # Resumen de inventario
-│   │   │   ├── Combinaciones.js      # Combinaciones de productos
-│   │   │   ├── CatFactsModal.js      # Modal datos de gatos
-│   │   │   └── UselessFactFooter.js  # Footer con dato inútil
+│   │   ├── components/               # Componentes React (.tsx)
+│   │   │   ├── ProductoList.tsx      # Lista con ordenamiento
+│   │   │   ├── ProductoForm.tsx      # Formulario CRUD
+│   │   │   ├── InventarioResumen.tsx # Resumen de inventario
+│   │   │   ├── Combinaciones.tsx     # Combinaciones de productos
+│   │   │   ├── CatFactsModal.tsx     # Modal datos de gatos
+│   │   │   └── UselessFactFooter.tsx # Footer con dato inútil
+│   │   ├── hooks/                    # Custom Hooks
+│   │   │   ├── useProductos.ts       # Hook para gestión de productos
+│   │   │   └── useSorting.ts         # Hook para ordenamiento
 │   │   ├── services/
-│   │   │   └── api.js                # Servicios HTTP
-│   │   ├── App.js
+│   │   │   └── api.ts                # Servicios HTTP tipados
+│   │   ├── types/
+│   │   │   └── index.ts              # Definiciones de tipos
+│   │   ├── utils/
+│   │   │   ├── constants.ts          # Constantes de la app
+│   │   │   └── formatters.ts         # Utilidades de formateo
+│   │   ├── App.tsx
 │   │   └── App.css
+│   ├── tsconfig.json                 # Configuración TypeScript
 │   └── package.json
 │
 ├── scripts/
@@ -124,6 +134,23 @@ crud-productos/
 │
 └── README.md
 ```
+
+## Buenas Prácticas Implementadas
+
+### Backend (Java/Spring)
+- **Arquitectura en capas**: Controller → Service → Repository
+- **DTOs**: Separación entre entidades y objetos de transferencia
+- **Validaciones**: Anotaciones de Bean Validation (@NotBlank, @Min, etc.)
+- **Manejo de excepciones**: GlobalExceptionHandler centralizado
+- **CORS configurado**: Permitir peticiones del frontend
+
+### Frontend (React/TypeScript)
+- **TypeScript**: Tipado estático para mayor robustez
+- **Custom Hooks**: Lógica reutilizable (useProductos, useSorting)
+- **Interfaces y Types**: Definiciones centralizadas en `/types`
+- **Constantes centralizadas**: Mensajes de error, validación, configuración
+- **Utilidades**: Funciones de formateo reutilizables
+- **Componentes tipados**: Props definidas con interfaces
 
 ## API Endpoints
 
@@ -224,8 +251,8 @@ lsof -i :3000
 
 ## Autor
 
-Prueba Técnica - Analista Desarrollador
+Jhon Alexander Suarez - Prueba Técnica Analista Desarrollador
 
 ## Licencia
 
-Este proyecto es parte de una prueba técnica.
+Este proyecto es parte de una prueba técnica para Comercial Card S.A.S.

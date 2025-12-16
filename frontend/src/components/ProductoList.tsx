@@ -1,17 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import useProductos from '../hooks/useProductos';
 import useSorting from '../hooks/useSorting';
 import { formatCurrency } from '../utils/formatters';
+import type { Producto, ProductoListProps } from '../types';
 
 /**
  * Componente para mostrar la lista de productos con ordenamiento
  */
-const ProductoList = ({ onEdit, onRefresh, refreshKey }) => {
+const ProductoList: React.FC<ProductoListProps> = ({ onEdit, onRefresh, refreshKey = 0 }) => {
   const { productos, loading, error, deleteProducto } = useProductos(refreshKey);
-  const { sortedData, requestSort, getSortIndicator } = useSorting(productos);
+  const { sortedData, requestSort, getSortIndicator } = useSorting<Producto>(productos);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number): Promise<void> => {
     if (window.confirm('¿Está seguro de eliminar este producto?')) {
       const result = await deleteProducto(id);
       if (result.success && onRefresh) {
@@ -81,17 +81,6 @@ const ProductoList = ({ onEdit, onRefresh, refreshKey }) => {
       )}
     </div>
   );
-};
-
-ProductoList.propTypes = {
-  onEdit: PropTypes.func.isRequired,
-  onRefresh: PropTypes.func,
-  refreshKey: PropTypes.number,
-};
-
-ProductoList.defaultProps = {
-  onRefresh: null,
-  refreshKey: 0,
 };
 
 export default ProductoList;

@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { productoService } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
 import { ERROR_MESSAGES } from '../utils/constants';
+import type { InventarioResumen as InventarioResumenType, InventarioResumenProps } from '../types';
 
 /**
  * Componente para mostrar el resumen del inventario
  */
-const InventarioResumen = ({ refreshKey }) => {
-  const [resumen, setResumen] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const InventarioResumen: React.FC<InventarioResumenProps> = ({ refreshKey = 0 }) => {
+  const [resumen, setResumen] = useState<InventarioResumenType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchResumen = useCallback(async () => {
+  const fetchResumen = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
       const response = await productoService.getResumenInventario();
@@ -68,14 +68,6 @@ const InventarioResumen = ({ refreshKey }) => {
       </div>
     </div>
   );
-};
-
-InventarioResumen.propTypes = {
-  refreshKey: PropTypes.number,
-};
-
-InventarioResumen.defaultProps = {
-  refreshKey: 0,
 };
 
 export default InventarioResumen;

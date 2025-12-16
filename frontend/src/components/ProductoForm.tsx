@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useCallback, FormEvent, ChangeEvent } from 'react';
 import { productoService } from '../services/api';
 import { VALIDATION_MESSAGES, ERROR_MESSAGES } from '../utils/constants';
+import type { ProductoFormProps, ProductoFormData, FormErrors, ProductoCreateDTO } from '../types';
 
 /**
  * Formulario para crear/editar productos
  */
-const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
-  const [formData, setFormData] = useState({
+const ProductoForm: React.FC<ProductoFormProps> = ({ productoToEdit, onSave, onCancel }) => {
+  const [formData, setFormData] = useState<ProductoFormData>({
     nombre: '',
     descripcion: '',
     precio: '',
     cantidadStock: '',
   });
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [loading, setLoading] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const isEditing = !!productoToEdit;
 
-  const resetForm = useCallback(() => {
+  const resetForm = useCallback((): void => {
     setFormData({
       nombre: '',
       descripcion: '',
@@ -43,8 +43,8 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
     }
   }, [productoToEdit, resetForm]);
 
-  const validate = () => {
-    const newErrors = {};
+  const validate = (): boolean => {
+    const newErrors: FormErrors = {};
 
     if (!formData.nombre.trim()) {
       newErrors.nombre = VALIDATION_MESSAGES.REQUIRED_NAME;
@@ -52,13 +52,13 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
 
     if (!formData.precio) {
       newErrors.precio = VALIDATION_MESSAGES.REQUIRED_PRICE;
-    } else if (isNaN(formData.precio) || parseFloat(formData.precio) <= 0) {
+    } else if (isNaN(Number(formData.precio)) || parseFloat(formData.precio) <= 0) {
       newErrors.precio = VALIDATION_MESSAGES.INVALID_PRICE;
     }
 
     if (!formData.cantidadStock) {
       newErrors.cantidadStock = VALIDATION_MESSAGES.REQUIRED_STOCK;
-    } else if (isNaN(formData.cantidadStock) || parseInt(formData.cantidadStock) < 0) {
+    } else if (isNaN(Number(formData.cantidadStock)) || parseInt(formData.cantidadStock) < 0) {
       newErrors.cantidadStock = VALIDATION_MESSAGES.INVALID_STOCK;
     }
 
@@ -66,7 +66,7 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -80,7 +80,7 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setSubmitError(null);
 
@@ -88,7 +88,7 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
 
     setLoading(true);
 
-    const productoData = {
+    const productoData: ProductoCreateDTO = {
       nombre: formData.nombre.trim(),
       descripcion: formData.descripcion.trim() || null,
       precio: parseFloat(formData.precio),
@@ -96,14 +96,14 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
     };
 
     try {
-      if (isEditing) {
+      if (isEditing && productoToEdit) {
         await productoService.update(productoToEdit.id, productoData);
       } else {
         await productoService.create(productoData);
       }
       resetForm();
       if (onSave) onSave();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error saving product:', err);
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
@@ -117,7 +117,7 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     resetForm();
     if (onCancel) onCancel();
   };
@@ -151,7 +151,7 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
             value={formData.descripcion}
             onChange={handleChange}
             placeholder="Descripción del producto (opcional)"
-            rows="3"
+            rows={3}
           />
         </div>
 
@@ -203,24 +203,6 @@ const ProductoForm = ({ productoToEdit, onSave, onCancel }) => {
       </form>
     </div>
   );
-};
-
-ProductoForm.propTypes = {
-  productoToEdit: PropTypes.shape({
-    id: PropTypes.number,
-    nombre: PropTypes.string,
-    descripcion: PropTypes.string,
-    precio: PropTypes.number,
-    cantidadStock: PropTypes.number,
-  }),
-  onSave: PropTypes.func,
-  onCancel: PropTypes.func,
-};
-
-ProductoForm.defaultProps = {
-  productoToEdit: null,
-  onSave: null,
-  onCancel: null,
 };
 
 export default ProductoForm;

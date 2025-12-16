@@ -1,18 +1,22 @@
 import { useState, useMemo, useCallback } from 'react';
 import { SORT_DIRECTIONS, NUMERIC_FIELDS, TABLE_CONFIG } from '../utils/constants';
+import type { SortConfig, UseSortingReturn } from '../types';
 
 /**
  * Custom Hook para ordenamiento de tablas
- * @param {Array} data - Datos a ordenar
- * @param {Object} initialConfig - Configuración inicial de ordenamiento
+ * @param data - Datos a ordenar
+ * @param initialConfig - Configuración inicial de ordenamiento
  */
-const useSorting = (data, initialConfig = {}) => {
-  const [sortConfig, setSortConfig] = useState({
+const useSorting = <T extends Record<string, any>>(
+  data: T[],
+  initialConfig: Partial<SortConfig> = {}
+): UseSortingReturn<T> => {
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: initialConfig.key || TABLE_CONFIG.DEFAULT_SORT_KEY,
     direction: initialConfig.direction || TABLE_CONFIG.DEFAULT_SORT_DIRECTION,
   });
 
-  const requestSort = useCallback((key) => {
+  const requestSort = useCallback((key: string): void => {
     setSortConfig((prevConfig) => ({
       key,
       direction:
@@ -22,14 +26,14 @@ const useSorting = (data, initialConfig = {}) => {
     }));
   }, []);
 
-  const sortedData = useMemo(() => {
+  const sortedData = useMemo((): T[] => {
     if (!data || data.length === 0) return [];
 
     const sortableData = [...data];
 
     sortableData.sort((a, b) => {
-      let aValue = a[sortConfig.key];
-      let bValue = b[sortConfig.key];
+      let aValue: any = a[sortConfig.key];
+      let bValue: any = b[sortConfig.key];
 
       // Manejar valores numéricos
       if (NUMERIC_FIELDS.includes(sortConfig.key)) {
@@ -53,7 +57,7 @@ const useSorting = (data, initialConfig = {}) => {
     return sortableData;
   }, [data, sortConfig]);
 
-  const getSortIndicator = useCallback((key) => {
+  const getSortIndicator = useCallback((key: string): string => {
     if (sortConfig.key !== key) return '';
     return sortConfig.direction === SORT_DIRECTIONS.ASC ? ' ▲' : ' ▼';
   }, [sortConfig]);

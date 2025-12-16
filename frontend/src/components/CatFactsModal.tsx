@@ -1,29 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { externalApiService } from '../services/api';
 
-const CatFactsModal = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [catFacts, setCatFacts] = useState([]);
-  const [loading, setLoading] = useState(true);
+/**
+ * Modal que muestra datos curiosos sobre gatos
+ */
+const CatFactsModal: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [catFacts, setCatFacts] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const fetchCatFacts = async (): Promise<void> => {
+      try {
+        setLoading(true);
+        const facts = await externalApiService.getCatFacts(2);
+        setCatFacts(facts);
+      } catch (err) {
+        console.error('Error loading cat facts:', err);
+        setCatFacts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCatFacts();
   }, []);
 
-  const fetchCatFacts = async () => {
-    try {
-      setLoading(true);
-      const facts = await externalApiService.getCatFacts(2);
-      setCatFacts(facts);
-    } catch (err) {
-      console.error('Error loading cat facts:', err);
-      setCatFacts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsOpen(false);
   };
 

@@ -4,26 +4,26 @@ import { externalApiService } from '../services/api';
 /**
  * Footer con dato inútil del día e información de la empresa
  */
-const UselessFactFooter = () => {
-  const [fact, setFact] = useState('');
-  const [loading, setLoading] = useState(true);
+const UselessFactFooter: React.FC = () => {
+  const [fact, setFact] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const fetchUselessFact = async (): Promise<void> => {
+      try {
+        setLoading(true);
+        const factText = await externalApiService.getUselessFact();
+        setFact(factText);
+      } catch (err) {
+        console.error('Error loading useless fact:', err);
+        setFact('No se pudo cargar el dato del día.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchUselessFact();
   }, []);
-
-  const fetchUselessFact = async () => {
-    try {
-      setLoading(true);
-      const factText = await externalApiService.getUselessFact();
-      setFact(factText);
-    } catch (err) {
-      console.error('Error loading useless fact:', err);
-      setFact('No se pudo cargar el dato del día.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <footer className="app-footer">

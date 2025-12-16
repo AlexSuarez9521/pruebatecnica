@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { productoService } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
 import { ERROR_MESSAGES, VALIDATION_MESSAGES } from '../utils/constants';
+import type { CombinacionProducto } from '../types';
 
 /**
  * Componente para buscar combinaciones de productos
  */
-const Combinaciones = () => {
-  const [valorMaximo, setValorMaximo] = useState('');
-  const [combinaciones, setCombinaciones] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searched, setSearched] = useState(false);
+const Combinaciones: React.FC = () => {
+  const [valorMaximo, setValorMaximo] = useState<string>('');
+  const [combinaciones, setCombinaciones] = useState<CombinacionProducto[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [searched, setSearched] = useState<boolean>(false);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     if (!valorMaximo || parseFloat(valorMaximo) <= 0) {
@@ -35,6 +36,10 @@ const Combinaciones = () => {
     }
   };
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setValorMaximo(e.target.value);
+  };
+
   return (
     <div className="combinaciones">
       <h3>Combinaciones de Productos</h3>
@@ -50,7 +55,7 @@ const Combinaciones = () => {
             type="number"
             id="valorMaximo"
             value={valorMaximo}
-            onChange={(e) => setValorMaximo(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Ej: 1000000"
             min="0"
             step="0.01"
@@ -84,8 +89,8 @@ const Combinaciones = () => {
                 </thead>
                 <tbody>
                   {combinaciones.map((combo, index) => {
-                    const productos = combo.slice(0, -1);
-                    const suma = combo[combo.length - 1];
+                    const productos = combo.slice(0, -1) as string[];
+                    const suma = combo[combo.length - 1] as number;
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
