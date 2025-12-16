@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { externalApiService } from '../services/api';
 
-/**
- * Modal que muestra datos curiosos sobre gatos
- */
 const CatFactsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [catFacts, setCatFacts] = useState<string[]>([]);
@@ -37,9 +34,7 @@ const CatFactsModal: React.FC = () => {
       <div className="modal">
         <div className="modal-header">
           <h2>🐱 Sabías que...</h2>
-          <button className="modal-close" onClick={handleClose}>
-            ×
-          </button>
+          <button className="modal-close" onClick={handleClose}>×</button>
         </div>
         <div className="modal-body">
           {loading ? (
@@ -58,9 +53,7 @@ const CatFactsModal: React.FC = () => {
           )}
         </div>
         <div className="modal-footer">
-          <button className="btn-primary" onClick={handleClose}>
-            ¡Entendido!
-          </button>
+          <button className="btn-primary" onClick={handleClose}>¡Entendido!</button>
         </div>
       </div>
     </div>

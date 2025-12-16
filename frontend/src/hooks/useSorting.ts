@@ -2,11 +2,6 @@ import { useState, useMemo, useCallback } from 'react';
 import { SORT_DIRECTIONS, NUMERIC_FIELDS, TABLE_CONFIG } from '../utils/constants';
 import type { SortConfig, UseSortingReturn } from '../types';
 
-/**
- * Custom Hook para ordenamiento de tablas
- * @param data - Datos a ordenar
- * @param initialConfig - Configuración inicial de ordenamiento
- */
 const useSorting = <T extends Record<string, any>>(
   data: T[],
   initialConfig: Partial<SortConfig> = {}
@@ -35,12 +30,10 @@ const useSorting = <T extends Record<string, any>>(
       let aValue: any = a[sortConfig.key];
       let bValue: any = b[sortConfig.key];
 
-      // Manejar valores numéricos
       if (NUMERIC_FIELDS.includes(sortConfig.key)) {
         aValue = Number(aValue) || 0;
         bValue = Number(bValue) || 0;
       } else if (typeof aValue === 'string') {
-        // Manejar strings (case insensitive)
         aValue = aValue?.toLowerCase() || '';
         bValue = bValue?.toLowerCase() || '';
       }

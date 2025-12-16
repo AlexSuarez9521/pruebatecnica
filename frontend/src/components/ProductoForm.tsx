@@ -3,9 +3,6 @@ import { productoService } from '../services/api';
 import { VALIDATION_MESSAGES, ERROR_MESSAGES } from '../utils/constants';
 import type { ProductoFormProps, ProductoFormData, FormErrors, ProductoCreateDTO } from '../types';
 
-/**
- * Formulario para crear/editar productos
- */
 const ProductoForm: React.FC<ProductoFormProps> = ({ productoToEdit, onSave, onCancel }) => {
   const [formData, setFormData] = useState<ProductoFormData>({
     nombre: '',
@@ -108,9 +105,7 @@ const ProductoForm: React.FC<ProductoFormProps> = ({ productoToEdit, onSave, onC
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
       } else {
-        setSubmitError(
-          err.response?.data?.message || ERROR_MESSAGES.SAVE_PRODUCT
-        );
+        setSubmitError(err.response?.data?.message || ERROR_MESSAGES.SAVE_PRODUCT);
       }
     } finally {
       setLoading(false);

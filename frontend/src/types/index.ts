@@ -1,11 +1,3 @@
-/**
- * Definiciones de tipos para la aplicación
- */
-
-// ============================================
-// Entidades
-// ============================================
-
 export interface Producto {
   id: number;
   nombre: string;
@@ -28,10 +20,6 @@ export interface ProductoCreateDTO {
   cantidadStock: number;
 }
 
-// ============================================
-// DTOs de respuesta del API
-// ============================================
-
 export interface InventarioResumen {
   valorTotalInventario: number;
   totalProductos: number;
@@ -39,10 +27,6 @@ export interface InventarioResumen {
 }
 
 export type CombinacionProducto = (string | number)[];
-
-// ============================================
-// Estados y configuración
-// ============================================
 
 export interface SortConfig {
   key: keyof Producto | string;
@@ -53,20 +37,12 @@ export interface FormErrors {
   [key: string]: string | null;
 }
 
-// ============================================
-// Respuestas de operaciones
-// ============================================
-
 export interface OperationResult<T = void> {
   success: boolean;
   data?: T;
   error?: string;
   validationErrors?: FormErrors;
 }
-
-// ============================================
-// Props de componentes
-// ============================================
 
 export interface ProductoListProps {
   onEdit: (producto: Producto) => void;
@@ -83,10 +59,6 @@ export interface ProductoFormProps {
 export interface InventarioResumenProps {
   refreshKey?: number;
 }
-
-// ============================================
-// Hook returns
-// ============================================
 
 export interface UseProductosReturn {
   productos: Producto[];

@@ -4,9 +4,6 @@ import useSorting from '../hooks/useSorting';
 import { formatCurrency } from '../utils/formatters';
 import type { Producto, ProductoListProps } from '../types';
 
-/**
- * Componente para mostrar la lista de productos con ordenamiento
- */
 const ProductoList: React.FC<ProductoListProps> = ({ onEdit, onRefresh, refreshKey = 0 }) => {
   const { productos, loading, error, deleteProducto } = useProductos(refreshKey);
   const { sortedData, requestSort, getSortIndicator } = useSorting<Producto>(productos);
@@ -61,16 +58,10 @@ const ProductoList: React.FC<ProductoListProps> = ({ onEdit, onRefresh, refreshK
                 <td>{formatCurrency(producto.precio)}</td>
                 <td>{producto.cantidadStock}</td>
                 <td className="actions">
-                  <button
-                    className="btn-edit"
-                    onClick={() => onEdit(producto)}
-                  >
+                  <button className="btn-edit" onClick={() => onEdit(producto)}>
                     Editar
                   </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDelete(producto.id)}
-                  >
+                  <button className="btn-delete" onClick={() => handleDelete(producto.id)}>
                     Eliminar
                   </button>
                 </td>

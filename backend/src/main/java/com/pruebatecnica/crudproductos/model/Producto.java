@@ -39,9 +39,6 @@ public class Producto {
     @Column(name = "cantidad_stock", nullable = false)
     private Integer cantidadStock;
 
-    /**
-     * Calcula el valor de inventario para este producto (precio * cantidadStock)
-     */
     public BigDecimal getValorInventario() {
         if (precio == null || cantidadStock == null) {
             return BigDecimal.ZERO;

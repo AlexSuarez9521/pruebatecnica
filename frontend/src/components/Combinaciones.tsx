@@ -4,9 +4,6 @@ import { formatCurrency } from '../utils/formatters';
 import { ERROR_MESSAGES, VALIDATION_MESSAGES } from '../utils/constants';
 import type { CombinacionProducto } from '../types';
 
-/**
- * Componente para buscar combinaciones de productos
- */
 const Combinaciones: React.FC = () => {
   const [valorMaximo, setValorMaximo] = useState<string>('');
   const [combinaciones, setCombinaciones] = useState<CombinacionProducto[]>([]);
@@ -76,9 +73,7 @@ const Combinaciones: React.FC = () => {
             </p>
           ) : (
             <>
-              <h4>
-                Combinaciones encontradas ({combinaciones.length})
-              </h4>
+              <h4>Combinaciones encontradas ({combinaciones.length})</h4>
               <table className="combinaciones-table">
                 <thead>
                   <tr>

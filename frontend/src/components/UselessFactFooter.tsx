@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { externalApiService } from '../services/api';
 
-/**
- * Footer con dato inútil del día e información de la empresa
- */
 const UselessFactFooter: React.FC = () => {
   const [fact, setFact] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +24,6 @@ const UselessFactFooter: React.FC = () => {
 
   return (
     <footer className="app-footer">
-      {/* Useless Fact Section */}
       <div className="useless-fact-section">
         <h4>Dato Inútil del Día</h4>
         {loading ? (
@@ -37,7 +33,6 @@ const UselessFactFooter: React.FC = () => {
         )}
       </div>
 
-      {/* Company Info Section */}
       <div className="company-footer">
         <div className="company-content">
           <div className="company-logo">
@@ -62,9 +57,7 @@ const UselessFactFooter: React.FC = () => {
 
           <div className="company-contact">
             <p>Teléfono: <strong>(4) 605 09 62</strong></p>
-            <p>
-              <a href="mailto:info@comercialcard.com.co">info@comercialcard.com.co</a>
-            </p>
+            <p><a href="mailto:info@comercialcard.com.co">info@comercialcard.com.co</a></p>
           </div>
 
           <div className="company-divider"></div>

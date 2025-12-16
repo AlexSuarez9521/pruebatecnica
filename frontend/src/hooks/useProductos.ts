@@ -3,10 +3,6 @@ import { productoService } from '../services/api';
 import { ERROR_MESSAGES } from '../utils/constants';
 import type { Producto, ProductoCreateDTO, OperationResult, UseProductosReturn } from '../types';
 
-/**
- * Custom Hook para gestionar productos
- * Encapsula la lógica de carga, CRUD y estado de productos
- */
 const useProductos = (refreshKey: number = 0): UseProductosReturn => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

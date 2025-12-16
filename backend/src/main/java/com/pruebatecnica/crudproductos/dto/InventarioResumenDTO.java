@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- * DTO para representar el resumen del inventario.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

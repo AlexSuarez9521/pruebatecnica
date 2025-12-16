@@ -18,30 +18,18 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
 
-    /**
-     * Obtiene todos los productos
-     */
     public List<Producto> obtenerTodos() {
         return productoRepository.findAll();
     }
 
-    /**
-     * Obtiene un producto por su ID
-     */
     public Optional<Producto> obtenerPorId(Long id) {
         return productoRepository.findById(id);
     }
 
-    /**
-     * Crea un nuevo producto
-     */
     public Producto crear(Producto producto) {
         return productoRepository.save(producto);
     }
 
-    /**
-     * Actualiza un producto existente
-     */
     public Optional<Producto> actualizar(Long id, Producto productoActualizado) {
         return productoRepository.findById(id)
                 .map(producto -> {
@@ -53,9 +41,6 @@ public class ProductoService {
                 });
     }
 
-    /**
-     * Elimina un producto por su ID
-     */
     public boolean eliminar(Long id) {
         if (productoRepository.existsById(id)) {
             productoRepository.deleteById(id);
@@ -64,9 +49,6 @@ public class ProductoService {
         return false;
     }
 
-    /**
-     * Obtiene el resumen del inventario (valor total y producto con mayor valor)
-     */
     public InventarioResumenDTO obtenerResumenInventario() {
         BigDecimal valorTotal = productoRepository.calcularValorTotalInventario();
         Producto productoMayorValor = productoRepository.findProductoConMayorValorInventario()
@@ -75,15 +57,6 @@ public class ProductoService {
         return new InventarioResumenDTO(valorTotal, productoMayorValor);
     }
 
-    /**
-     * Encuentra combinaciones de productos cuya suma de precios sea <= valorMaximo.
-     * - Mínimo 2 y máximo 3 productos por combinación
-     * - Ordenado descendentemente por la suma de precios
-     * - Máximo 5 elementos en el resultado
-     *
-     * @param valorMaximo El valor máximo permitido para la suma de precios
-     * @return Lista de combinaciones que cumplen el criterio
-     */
     public List<CombinacionProductosDTO> encontrarCombinaciones(BigDecimal valorMaximo) {
         List<Producto> productos = productoRepository.findAllByOrderByPrecioAsc();
         List<CombinacionProductosDTO> combinaciones = new ArrayList<>();
@@ -93,7 +66,6 @@ public class ProductoService {
             return combinaciones;
         }
 
-        // Combinaciones de 2 productos
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 BigDecimal suma = productos.get(i).getPrecio().add(productos.get(j).getPrecio());
@@ -107,7 +79,6 @@ public class ProductoService {
             }
         }
 
-        // Combinaciones de 3 productos
         for (int i = 0; i < n - 2; i++) {
             for (int j = i + 1; j < n - 1; j++) {
                 for (int k = j + 1; k < n; k++) {
@@ -126,10 +97,8 @@ public class ProductoService {
             }
         }
 
-        // Ordenar descendentemente por suma de precios
         combinaciones.sort((a, b) -> b.getSumaPrecios().compareTo(a.getSumaPrecios()));
 
-        // Retornar máximo 5 elementos
         return combinaciones.size() > 5 ? combinaciones.subList(0, 5) : combinaciones;
     }
 }

@@ -21,18 +21,12 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
-    /**
-     * GET /api/productos - Obtiene todos los productos
-     */
     @GetMapping
     public ResponseEntity<List<Producto>> obtenerTodos() {
         List<Producto> productos = productoService.obtenerTodos();
         return ResponseEntity.ok(productos);
     }
 
-    /**
-     * GET /api/productos/{id} - Obtiene un producto por ID
-     */
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
         return productoService.obtenerPorId(id)
@@ -40,18 +34,12 @@ public class ProductoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /**
-     * POST /api/productos - Crea un nuevo producto
-     */
     @PostMapping
     public ResponseEntity<Producto> crear(@Valid @RequestBody Producto producto) {
         Producto productoCreado = productoService.crear(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productoCreado);
     }
 
-    /**
-     * PUT /api/productos/{id} - Actualiza un producto existente
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizar(
             @PathVariable Long id,
@@ -61,9 +49,6 @@ public class ProductoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /**
-     * DELETE /api/productos/{id} - Elimina un producto
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (productoService.eliminar(id)) {
@@ -72,26 +57,17 @@ public class ProductoController {
         return ResponseEntity.notFound().build();
     }
 
-    /**
-     * GET /api/productos/inventario/resumen - Obtiene el resumen del inventario
-     * (valor total y producto con mayor valor)
-     */
     @GetMapping("/inventario/resumen")
     public ResponseEntity<InventarioResumenDTO> obtenerResumenInventario() {
         InventarioResumenDTO resumen = productoService.obtenerResumenInventario();
         return ResponseEntity.ok(resumen);
     }
 
-    /**
-     * GET /api/productos/combinaciones/{valorMaximo} - Obtiene combinaciones de productos
-     * cuya suma de precios sea <= valorMaximo
-     */
     @GetMapping("/combinaciones/{valorMaximo}")
     public ResponseEntity<List<List<Object>>> obtenerCombinaciones(
             @PathVariable BigDecimal valorMaximo) {
         List<CombinacionProductosDTO> combinaciones = productoService.encontrarCombinaciones(valorMaximo);
 
-        // Convertir al formato requerido: [[nombre1, nombre2, suma], ...]
         List<List<Object>> resultado = combinaciones.stream()
                 .map(CombinacionProductosDTO::toListFormat)
                 .toList();

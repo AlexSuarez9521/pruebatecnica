@@ -2,9 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import { API_CONFIG } from '../utils/constants';
 import type { Producto, ProductoCreateDTO, InventarioResumen, CombinacionProducto } from '../types';
 
-/**
- * Instancia de Axios configurada para el API
- */
 const api = axios.create({
   baseURL: API_CONFIG.BASE_URL,
   timeout: API_CONFIG.TIMEOUT,
@@ -13,9 +10,6 @@ const api = axios.create({
   },
 });
 
-/**
- * Servicios para gestión de Productos
- */
 export const productoService = {
   getAll: (): Promise<AxiosResponse<Producto[]>> =>
     api.get('/productos'),
@@ -39,9 +33,6 @@ export const productoService = {
     api.get(`/productos/combinaciones/${valorMaximo}`),
 };
 
-/**
- * Interfaces para APIs externas
- */
 interface MeowFactsResponse {
   data: string[];
 }
@@ -55,9 +46,6 @@ interface UselessFactResponse {
   permalink: string;
 }
 
-/**
- * Servicios para APIs externas
- */
 export const externalApiService = {
   getCatFacts: async (count: number = 2): Promise<string[]> => {
     try {

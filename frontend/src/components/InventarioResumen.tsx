@@ -4,9 +4,6 @@ import { formatCurrency } from '../utils/formatters';
 import { ERROR_MESSAGES } from '../utils/constants';
 import type { InventarioResumen as InventarioResumenType, InventarioResumenProps } from '../types';
 
-/**
- * Componente para mostrar el resumen del inventario
- */
 const InventarioResumen: React.FC<InventarioResumenProps> = ({ refreshKey = 0 }) => {
   const [resumen, setResumen] = useState<InventarioResumenType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,13 +46,10 @@ const InventarioResumen: React.FC<InventarioResumenProps> = ({ refreshKey = 0 })
           <div className="resumen-card">
             <span className="resumen-label">Producto con Mayor Valor en Inventario</span>
             <div className="producto-mayor">
-              <span className="producto-nombre">
-                {resumen.productoMayorValor.nombre}
-              </span>
+              <span className="producto-nombre">{resumen.productoMayorValor.nombre}</span>
               <span className="producto-valor">
                 {formatCurrency(
-                  resumen.productoMayorValor.precio *
-                    resumen.productoMayorValor.cantidadStock
+                  resumen.productoMayorValor.precio * resumen.productoMayorValor.cantidadStock
                 )}
               </span>
               <span className="producto-detalle">
